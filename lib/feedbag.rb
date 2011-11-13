@@ -104,6 +104,12 @@ module Feedbag
 
 				doc = Hpricot(f.read)
 
+        # check if this is a badly formed RSS feed with a bogus 
+        # content type
+        if (doc.at("/rss") || doc.at("/feed")) 
+          return self.add_feed(url, nil)
+        end
+
 				if doc.at("base") and doc.at("base")["href"]
 					$base_uri = doc.at("base")["href"]
 				else
