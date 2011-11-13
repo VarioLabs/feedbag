@@ -34,6 +34,16 @@ module Feedbag
 
 	$feeds = []
 	$base_uri = nil
+	
+	@@user_agent = "Feedbag (0.6/like Safari)"
+	
+	def self.user_agent
+    @@user_agent
+  end
+  
+  def self.user_agent=(user_agent)
+    @@user_agent = user_agent
+  end
 
 	def self.feed?(url)
 		# use LWR::Simple.normalize some time
@@ -83,7 +93,7 @@ module Feedbag
 	  end
 
 		begin
-			html = open(url) do |f|
+			html = open(url, "User-Agent"=> self.user_agent) do |f|
 				content_type = f.content_type.downcase
 				if content_type == "application/octet-stream" # open failed
 				  content_type = f.meta["content-type"].gsub(/;.*$/, '')
